@@ -43,7 +43,7 @@ def main():
         print("\nIncorrect Command line arguments. Format is 'python recorder.py field_key start_time(in format 'HH:MM:SS') record_duration (in seconds) outputfilename.mp4'\n\nFor example to record boardwalk field for one hour at 7 PM:\npython recorder.py BOARDWALK 17:00:00 3600 boardwalk_video.mp4\n\n")
         raise Exception("Wrong Command Line Args")
 
-    field_url = field_urls.get(sys.argv[1])
+    field_url = field_urls.get(sys.argv[1].upper())
     if field_url is None:
         raise Exception(f"Field key is wrong. Available options are: {list(field_urls.keys())}")
     
@@ -52,9 +52,7 @@ def main():
     startTime = datetime.combine(datetime.now().date(), datetime.strptime(sys.argv[2], '%H:%M:%S').time())
     endTime = startTime + timedelta(seconds=int(sys.argv[3]))
     
-    start_delay_delta = (startTime - datetime.now())
-    start_delay = start_delay_delta.seconds + start_delay_delta.days * 24 * 60 * 60
-
+    start_delay = (startTime - datetime.now()).total_seconds()
     if start_delay > 0:
         print(f"Waiting {start_delay} seconds until {sys.argv[2]}")
         time.sleep(start_delay)
