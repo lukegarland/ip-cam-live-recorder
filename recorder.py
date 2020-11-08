@@ -62,7 +62,8 @@ def main():
     
     # If ffmpeg returns non-zero status, try again (max 10 times)
     i = 1
-    while i < 10 and status != 0:
+    while i < 10 and (endTime - datetime.now()).total_seconds() > 1:
+        time.sleep(5)
         updated_duration = (endTime - datetime.now()).seconds
         raw_stream_url = get_raw_stream_URL(field_url)
         cmd = generate_ffmpeg_cmd(raw_stream_url, updated_duration, sys.argv[4] + f"_{i}")
